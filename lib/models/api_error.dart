@@ -1,7 +1,7 @@
 class ApiError {
-  String _error;
+  late String _error;
 
-  ApiError({String error}) {
+  ApiError({required String error}) {
     this._error = error;
   }
 

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/models/api_error.dart';
 import 'package:flutter_app_1/models/api_response.dart';
+import 'package:flutter_app_1/models/user.dart';
+import 'package:flutter_app_1/services/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Landing extends StatefulWidget {
@@ -27,13 +30,21 @@ class _LandingState extends State<Landing> {
           context, '/login', ModalRoute.withName('/login'));
     } else {
       ApiResponse _apiResponse = await getUserDetails(_userId);
+      if ((_apiResponse.ApiErrors as ApiError) == null) {
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/home', ModalRoute.withName('/home'),
+            arguments: (_apiResponse.Data as User));
+      } else {
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/login', ModalRoute.withName('/login'));
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text('test landing'),
+    return Scaffold(
+      body: Center(child: CircularProgressIndicator()),
     );
   }
 }

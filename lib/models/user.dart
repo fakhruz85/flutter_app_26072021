@@ -1,9 +1,9 @@
 class User {
-  int _userId;
-  String _username;
-  String _token;
+  late int _userId;
+  late String _username;
+  late String _token;
 
-  User({int userId, String username, String token}) {
+  User({required int userId, required String username, required String token}) {
     this._userId = userId;
     this._username = username;
     this._token = token;

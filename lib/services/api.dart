@@ -22,13 +22,41 @@ Future<ApiResponse> authenticateUser(String username, String password) async {
         _apiResponse.Data = User.fromJson(json.decode(response.body));
         break;
       case 401:
-        //_apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
+        _apiResponse.ApiErrors = ApiError.fromJson(json.decode(response.body));
         break;
       default:
-        _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
+        print(response.body);
+        _apiResponse.ApiErrors = ApiError.fromJson(json.decode(response.body));
         break;
     }
   } on SocketException {
-    _apiResponse.ApiError = ApiError(error: "Server error. Please retry");
+    _apiResponse.ApiErrors = ApiError(error: "Server error. Please retry");
   }
+  return _apiResponse;
+}
+
+Future<ApiResponse> getUserDetails(String token) async {
+  ApiResponse _apiResponse = new ApiResponse();
+
+  try {
+    final response =
+        await http.get(Uri.parse('$_baseUrl$_pathUrl/attendance/get-profile'),
+            //Send authorization headers to the backend(restful)
+            headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
+
+    switch (response.statusCode) {
+      case 200:
+        _apiResponse.Data = User.fromJson(json.decode(response.body));
+        break;
+      case 401:
+        _apiResponse.ApiErrors = ApiError.fromJson(json.decode(response.body));
+        break;
+      default:
+        _apiResponse.ApiErrors = ApiError.fromJson(json.decode(response.body));
+        break;
+    }
+  } on SocketException {
+    _apiResponse.ApiErrors = ApiError(error: "Server error. Please retry");
+  }
+  return _apiResponse;
 }

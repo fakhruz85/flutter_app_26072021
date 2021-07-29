@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/models/api_error.dart';
+import 'package:flutter_app_1/models/api_response.dart';
+import 'package:flutter_app_1/services/api.dart';
 
 class Login extends StatefulWidget {
   Login({Key? key}) : super(key: key);
@@ -10,6 +13,32 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   int _counter = 0;
 
+  ApiResponse _apiResponse = new ApiResponse();
+
+  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  void _handleSubmitted() async {
+    _apiResponse = await authenticateUser(
+        _usernameController.text, _passwordController.text);
+
+    if ((_apiResponse.ApiErrors as ApiError) == null) {
+      if (_apiResponse.Data != null) {
+        _saveAndRedirectToHome();
+      } else {
+        showInSnackBar('Unsuccessful login, Username or Password is incorrect');
+      }
+    } else {
+      showInSnackBar((_apiResponse.ApiErrors as ApiError).error);
+    }
+  }
+
+  void showInSnackBar(String value) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(value)));
+  }
+
+  void _saveAndRedirectToHome() {}
+
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -20,9 +49,6 @@ class _LoginState extends State<Login> {
       _counter++;
     });
   }
-
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -92,16 +118,7 @@ class _LoginState extends State<Login> {
                   color: Colors.deepPurpleAccent,
                   borderRadius: BorderRadius.circular(35.0)),
               child: MaterialButton(
-                onPressed: () {
-                  print('Username : ' + _usernameController.text);
-                  print('Password : ' + _passwordController.text);
-
-                  //route
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => DashboardPage()),
-                  // );
-                },
+                onPressed: _handleSubmitted,
                 child: Text(
                   'LOGIN',
                   style: TextStyle(color: Colors.white),
