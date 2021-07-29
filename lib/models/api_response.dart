@@ -1,6 +1,6 @@
 class ApiResponse {
-  Object _data;
-  Object _apiError;
+  late Object _data;
+  late Object _apiError;
 
   Object get Data => _data;
   set Data(Object data) => _data = data;

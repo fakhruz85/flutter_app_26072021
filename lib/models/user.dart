@@ -30,5 +30,7 @@ class User {
     data['userId'] = this._userId;
     data['username'] = this._username;
     data['token'] = this._token;
+
+    return data;
   }
 }
