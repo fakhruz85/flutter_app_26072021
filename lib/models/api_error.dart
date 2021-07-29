@@ -9,7 +9,7 @@ class ApiError {
   set error(String error) => _error = error;
 
   ApiError.fromJson(Map<String, dynamic> json) {
-    _error = json['error'];
+    _error = json['error'] ?? '';
   }
 
   Map<String, dynamic> toJson() {

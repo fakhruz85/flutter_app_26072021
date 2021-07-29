@@ -20,6 +20,7 @@ Future<ApiResponse> authenticateUser(String username, String password) async {
     switch (response.statusCode) {
       case 200:
         _apiResponse.Data = User.fromJson(json.decode(response.body));
+        _apiResponse.ApiErrors = new ApiError(error: '');
         break;
       case 401:
         _apiResponse.ApiErrors = ApiError.fromJson(json.decode(response.body));
@@ -37,16 +38,16 @@ Future<ApiResponse> authenticateUser(String username, String password) async {
 
 Future<ApiResponse> getUserDetails(String token) async {
   ApiResponse _apiResponse = new ApiResponse();
-
+  var url = Uri.http('$_baseUrl', '$_pathUrl/attendance/get-profile');
   try {
-    final response =
-        await http.get(Uri.parse('$_baseUrl$_pathUrl/attendance/get-profile'),
-            //Send authorization headers to the backend(restful)
-            headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
-
+    final response = await http.get(url,
+        //Send authorization headers to the backend(restful)
+        headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
+    print(response.body);
     switch (response.statusCode) {
       case 200:
         _apiResponse.Data = User.fromJson(json.decode(response.body));
+        _apiResponse.ApiErrors = new ApiError(error: '');
         break;
       case 401:
         _apiResponse.ApiErrors = ApiError.fromJson(json.decode(response.body));

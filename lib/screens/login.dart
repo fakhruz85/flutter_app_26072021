@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/models/api_error.dart';
 import 'package:flutter_app_1/models/api_response.dart';
+import 'package:flutter_app_1/models/user.dart';
 import 'package:flutter_app_1/services/api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   Login({Key? key}) : super(key: key);
@@ -22,7 +24,7 @@ class _LoginState extends State<Login> {
     _apiResponse = await authenticateUser(
         _usernameController.text, _passwordController.text);
 
-    if ((_apiResponse.ApiErrors as ApiError) == null) {
+    if ((_apiResponse.ApiErrors as ApiError).error == '') {
       if (_apiResponse.Data != null) {
         _saveAndRedirectToHome();
       } else {
@@ -37,7 +39,14 @@ class _LoginState extends State<Login> {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(value)));
   }
 
-  void _saveAndRedirectToHome() {}
+  void _saveAndRedirectToHome() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    print((_apiResponse.Data as User).token);
+    await prefs.setString("userId", (_apiResponse.Data as User).token);
+    Navigator.pushNamedAndRemoveUntil(
+        context, '/home', ModalRoute.withName('/home'),
+        arguments: (_apiResponse.Data as User));
+  }
 
   void _incrementCounter() {
     setState(() {

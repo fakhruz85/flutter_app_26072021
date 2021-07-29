@@ -24,13 +24,13 @@ class _LandingState extends State<Landing> {
   _loadUserInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _userId = (prefs.getString('userId') ?? "");
-
+    //showInSnackBar(_userId);
     if (_userId == "") {
       Navigator.pushNamedAndRemoveUntil(
           context, '/login', ModalRoute.withName('/login'));
     } else {
       ApiResponse _apiResponse = await getUserDetails(_userId);
-      if ((_apiResponse.ApiErrors as ApiError) == null) {
+      if ((_apiResponse.ApiErrors as ApiError).error == '') {
         Navigator.pushNamedAndRemoveUntil(
             context, '/home', ModalRoute.withName('/home'),
             arguments: (_apiResponse.Data as User));
@@ -39,6 +39,10 @@ class _LandingState extends State<Landing> {
             context, '/login', ModalRoute.withName('/login'));
       }
     }
+  }
+
+  void showInSnackBar(String value) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(value)));
   }
 
   @override

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/models/user.dart';
+import 'package:flutter_app_1/widgets/nav_drawer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -10,12 +13,32 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  void _handleLogout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('userId');
+    Navigator.pushNamedAndRemoveUntil(
+        context, '/login', ModalRoute.withName('/login'));
+  }
+
   @override
   Widget build(BuildContext context) {
+    final User args = ModalRoute.of(context)?.settings.arguments as User;
     return Scaffold(
       appBar: AppBar(title: Text(widget.title)),
+      drawer: NavDrawer(),
       body: Center(
-        child: Text('ini home'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text("Welcome back " + args.username + "!"),
+            Text("Your User Id is " + args.userId.toString()),
+            MaterialButton(
+              onPressed: _handleLogout,
+              child: Text("Logout"),
+            )
+          ],
+        ),
       ),
     );
   }
