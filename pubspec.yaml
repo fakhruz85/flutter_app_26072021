@@ -52,6 +52,12 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/images/pngwing.com.png
+    - assets/appimages/floppydisk.png 
+    - assets/appimages/iphone.png 
+    - assets/appimages/laptop.png 
+    - assets/appimages/pendrive.png 
+    - assets/appimages/pixel.png 
+    - assets/appimages/tablet.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

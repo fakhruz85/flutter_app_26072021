@@ -3,8 +3,6 @@ import 'package:flutter_app_1/landing.dart';
 import 'package:flutter_app_1/screens/home_page.dart';
 import 'package:flutter_app_1/screens/login.dart';
 
-import 'dashboard.dart';
-
 void main() {
   runApp(MyApp());
 }

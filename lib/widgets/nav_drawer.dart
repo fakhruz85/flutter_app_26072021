@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/screens/example.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NavDrawer extends StatefulWidget {
@@ -26,15 +27,21 @@ class _NavDrawerState extends State<NavDrawer> {
               child: Text('Drawer Header'),
               decoration: BoxDecoration(color: Colors.blue)),
           ListTile(
-            leading: Icon(Icons.inbox),
-            title: Text('Example Widgets'),
-            onTap: () {},
+            title: const Text('Example Widgets'),
+            onTap: () {
+              // Update the state of the app.
+              Navigator.pop(context);
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Example()),
+              );
+            },
           ),
           ListTile(
-            leading: Icon(Icons.logout),
-            title: Text('Logout'),
+            title: const Text('Logout'),
             onTap: _handleLogout,
-          )
+          ),
         ],
       ),
     );

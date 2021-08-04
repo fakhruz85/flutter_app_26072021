@@ -6,8 +6,8 @@ import 'package:flutter_app_1/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_app_1/models/api_response.dart';
 
-String _baseUrl = 'amtis.opengw.net:888';
-String _pathUrl = '/fakhruz/attendance/api/v1';
+String _baseUrl = 'amtis.opengw.net';
+String _pathUrl = '/skk/api/v1';
 
 Future<ApiResponse> authenticateUser(String username, String password) async {
   ApiResponse _apiResponse = new ApiResponse();
